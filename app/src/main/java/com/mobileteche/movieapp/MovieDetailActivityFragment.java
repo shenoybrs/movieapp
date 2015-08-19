@@ -61,15 +61,15 @@ public class MovieDetailActivityFragment extends Fragment {
 
         System.out.println(date); // Sat Jan 02 00:00:00 GMT 2010
         mRootView = inflater.inflate(R.layout.fragment_movie_detail, container, false);
-        back_arrow = (ImageButton) mRootView.findViewById(R.id.back_arrow);
+        //back_arrow = (ImageButton) mRootView.findViewById(R.id.back_arrow);
         bannerImageview = (ImageView)mRootView.findViewById(R.id.iconTeaserBanner);
 
-        back_arrow.setOnClickListener(new View.OnClickListener() {
+        /*back_arrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getActivity().finish();
             }
-        });
+        });*/
         ((TextView) mRootView.findViewById(R.id.teaserName)).setText(movieModel.title);
         ((TextView) mRootView.findViewById(R.id.teaserShortDesc)).setText(movieModel.overview);
         ((TextView) mRootView.findViewById(R.id.releasedate)).setText(DesiredFormat.format(date));

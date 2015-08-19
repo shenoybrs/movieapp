@@ -18,12 +18,14 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
+
             android:orientation="vertical"
             android:weightSum="6">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:paddingTop="10dp"
                 android:layout_weight="2"
                 android:orientation="vertical">
 
@@ -148,11 +150,11 @@
 
     </RelativeLayout>
 
-    <ImageButton
+   <!-- <ImageButton
         android:id="@+id/back_arrow"
         android:layout_gravity="top"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/action_back_drawable" />
+        android:background="@drawable/action_back_drawable" />-->
 
 </FrameLayout>
