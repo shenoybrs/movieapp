@@ -14,6 +14,11 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
 
 /**
  * A placeholder fragment containing a simple view.
@@ -44,6 +49,17 @@ public class MovieDetailActivityFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        DateFormat format = new SimpleDateFormat("yyyy-mm-dd", Locale.ENGLISH);
+        SimpleDateFormat DesiredFormat = new SimpleDateFormat("MMM dd, yyyy");
+        java.util.Date date = null;
+        try {
+            date = format.parse(movieModel.release_date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
+        System.out.println(date); // Sat Jan 02 00:00:00 GMT 2010
         mRootView = inflater.inflate(R.layout.fragment_movie_detail, container, false);
         back_arrow = (ImageButton) mRootView.findViewById(R.id.back_arrow);
         bannerImageview = (ImageView)mRootView.findViewById(R.id.iconTeaserBanner);
@@ -56,7 +72,7 @@ public class MovieDetailActivityFragment extends Fragment {
         });
         ((TextView) mRootView.findViewById(R.id.teaserName)).setText(movieModel.title);
         ((TextView) mRootView.findViewById(R.id.teaserShortDesc)).setText(movieModel.overview);
-        ((TextView) mRootView.findViewById(R.id.releasedate)).setText(movieModel.release_date);
+        ((TextView) mRootView.findViewById(R.id.releasedate)).setText(DesiredFormat.format(date));
         ((TextView) mRootView.findViewById(R.id.rating)).setText(String.valueOf(movieModel.vote_average)+"/10");
         Picasso.with(getActivity()).load("http://image.tmdb.org/t/p/original/"+movieModel.backdrop_path).into(bannerImageview);
         return mRootView;

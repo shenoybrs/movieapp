@@ -1,5 +1,7 @@
 package com.mobileteche.movieapp;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -37,6 +39,7 @@ public class MovieActivityFragment extends Fragment implements SharedPreferences
     String sortOption = "popularity";
     boolean settingChanged = false;
     SharedPreferences preference;
+    private String apiKey = null;
 
     public MovieActivityFragment() {
     }
@@ -47,31 +50,49 @@ public class MovieActivityFragment extends Fragment implements SharedPreferences
         sortOption = getResources().getString(R.string.pref_sort_default);
         preference = PreferenceManager.getDefaultSharedPreferences(getActivity());
         preference.registerOnSharedPreferenceChangeListener(this);
-        setHasOptionsMenu(true);
-        if (savedInstanceState != null && savedInstanceState.containsKey("key")) {
+        apiKey = BuildConfig.THE_MOVIE_DB_API_KEY;
+        if (apiKey != "") {
 
-            movieJsonStr = savedInstanceState.getString("key");
-            MovieModelResponse movieModelResponse = new MovieModelResponse();
-            movieModelResponse.results = new ArrayList<MovieModel>();
-            GsonParser<MovieModelResponse> parser = new GsonParser<MovieModelResponse>(
-                    MovieModelResponse.class);
-            try {
-                movieModelResponse = parser.getGson().fromJson(movieJsonStr, MovieModelResponse.class);
-                //movieModelResponse = parser.parse(movieJsonStr.toString());
-            } catch (Exception e) {
+            setHasOptionsMenu(true);
+            if (savedInstanceState != null && savedInstanceState.containsKey("key")) {
 
+                movieJsonStr = savedInstanceState.getString("key");
+                MovieModelResponse movieModelResponse = new MovieModelResponse();
+                movieModelResponse.results = new ArrayList<MovieModel>();
+                GsonParser<MovieModelResponse> parser = new GsonParser<MovieModelResponse>(
+                        MovieModelResponse.class);
+                try {
+                    movieModelResponse = parser.getGson().fromJson(movieJsonStr, MovieModelResponse.class);
+                    //movieModelResponse = parser.parse(movieJsonStr.toString());
+                } catch (Exception e) {
+
+                }
+                imageAdapter = new ImageAdapter(getActivity());
+                for (int count = 0; count < movieModelResponse.results.size(); count++) {
+
+                    imageAdapter.add(movieModelResponse.results.get(count));
+                }
+
+            } else {
+
+                imageAdapter = new ImageAdapter(getActivity());
+                new RequestMovieDataTask().execute(apiKey,sortOption);
             }
-            imageAdapter = new ImageAdapter(getActivity());
-            for (int count = 0; count < movieModelResponse.results.size(); count++) {
-
-                imageAdapter.add(movieModelResponse.results.get(count));
-            }
-
-        } else {
-
-            imageAdapter = new ImageAdapter(getActivity());
-            new RequestMovieDataTask().execute(sortOption, null);
         }
+        else
+        {
+            new AlertDialog.Builder(getActivity()).
+                    setTitle("API KEY Error").
+                    setMessage("Please add the key in gradle.properties").
+                    setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            getActivity().finish();
+                        }
+                    }).
+                    show();
+        }
+
     }
 
     @Override
@@ -130,7 +151,7 @@ public class MovieActivityFragment extends Fragment implements SharedPreferences
         super.onResume();
         if (settingChanged) {
             imageAdapter.removeAll();
-            new RequestMovieDataTask().execute(sortOption, null);
+            new RequestMovieDataTask().execute(apiKey, sortOption);
             settingChanged = false;
         }
 
@@ -173,7 +194,7 @@ public class MovieActivityFragment extends Fragment implements SharedPreferences
 
                 try {
 
-                    URL url = new URL("http://api.themoviedb.org/3/discover/movie?sort_by=" + params[0] + ".desc&api_key=77e87c5300254bcd2ba52c23aa38a693");
+                    URL url = new URL("http://api.themoviedb.org/3/discover/movie?sort_by=" + params[1] + ".desc&api_key="+params[0]);
 
                     // Create the request to OpenWeatherMap, and open the connection
                     urlConnection = (HttpURLConnection) url.openConnection();
