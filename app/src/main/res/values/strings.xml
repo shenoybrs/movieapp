@@ -14,4 +14,9 @@
     <string name="title_activity_fullscreen">FullscreenActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="no_network_message">"Please try after your network returns "</string>
+    <string name="no_network_title">No Network</string>
+    <string name="ok">OK</string>
+    <string name="api_error_title">API KEY Error</string>
+    <string name="api_error_message">Please add the key in gradle.properties</string>
 </resources>

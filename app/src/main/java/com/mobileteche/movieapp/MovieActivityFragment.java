@@ -44,6 +44,8 @@ public class MovieActivityFragment extends Fragment implements SharedPreferences
     public MovieActivityFragment() {
     }
 
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,20 +59,27 @@ public class MovieActivityFragment extends Fragment implements SharedPreferences
             if (savedInstanceState != null && savedInstanceState.containsKey("key")) {
 
                 movieJsonStr = savedInstanceState.getString("key");
-                MovieModelResponse movieModelResponse = new MovieModelResponse();
-                movieModelResponse.results = new ArrayList<MovieModel>();
-                GsonParser<MovieModelResponse> parser = new GsonParser<MovieModelResponse>(
-                        MovieModelResponse.class);
-                try {
-                    movieModelResponse = parser.getGson().fromJson(movieJsonStr, MovieModelResponse.class);
-                    //movieModelResponse = parser.parse(movieJsonStr.toString());
-                } catch (Exception e) {
+                if (movieJsonStr!=null) {
+                    MovieModelResponse movieModelResponse = new MovieModelResponse();
+                    movieModelResponse.results = new ArrayList<MovieModel>();
+                    GsonParser<MovieModelResponse> parser = new GsonParser<MovieModelResponse>(
+                            MovieModelResponse.class);
+                    try {
+                        movieModelResponse = parser.getGson().fromJson(movieJsonStr, MovieModelResponse.class);
+                        //movieModelResponse = parser.parse(movieJsonStr.toString());
+                    } catch (Exception e) {
 
+                    }
+                    imageAdapter = new ImageAdapter(getActivity());
+                    for (int count = 0; count < movieModelResponse.results.size(); count++) {
+
+                        imageAdapter.add(movieModelResponse.results.get(count));
+                    }
                 }
-                imageAdapter = new ImageAdapter(getActivity());
-                for (int count = 0; count < movieModelResponse.results.size(); count++) {
-
-                    imageAdapter.add(movieModelResponse.results.get(count));
+                else
+                {
+                    imageAdapter = new ImageAdapter(getActivity());
+                    new RequestMovieDataTask().execute(apiKey,sortOption);
                 }
 
             } else {
@@ -82,8 +91,8 @@ public class MovieActivityFragment extends Fragment implements SharedPreferences
         else
         {
             new AlertDialog.Builder(getActivity()).
-                    setTitle("API KEY Error").
-                    setMessage("Please add the key in gradle.properties").
+                    setTitle(getActivity().getString(R.string.api_error_title)).
+                    setMessage(getActivity().getString(R.string.api_error_message)).
                     setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
