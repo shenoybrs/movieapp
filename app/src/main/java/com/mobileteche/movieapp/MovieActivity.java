@@ -10,6 +10,10 @@ import android.support.v7.app.ActionBarActivity;
 
 
 public class MovieActivity extends ActionBarActivity {
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,5 +47,13 @@ public class MovieActivity extends ActionBarActivity {
             return networkInfo != null && networkInfo.isConnected();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
 }
