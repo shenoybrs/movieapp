@@ -31,6 +31,7 @@ public class MovieModel implements Parcelable {
     public boolean video;
     public float vote_average;
     public Long vote_count;
+    public boolean favorite = false;
 
 
     public MovieModel(Parcel parcel) {
@@ -47,6 +48,7 @@ public class MovieModel implements Parcelable {
         video = ParcelUtils.readString(parcel) == "true";
         vote_average = parcel.readFloat();
         vote_count = parcel.readLong();
+        favorite =ParcelUtils.readString(parcel) == "true";
     }
 
     public MovieModel() {
@@ -74,5 +76,6 @@ public class MovieModel implements Parcelable {
         video = ParcelUtils.readString(dest) == "true";
         vote_average = dest.readFloat();
         vote_count = dest.readLong();
+        favorite =ParcelUtils.readString(dest) == "true";
     }
 }

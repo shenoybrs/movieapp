@@ -24,7 +24,7 @@ public class MovieDetailActivity extends ActionBarActivity {
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
 
-                    .add(R.id.container_detail,movieDetailActivityFragment )
+                    .add(R.id.movie_detail_container,movieDetailActivityFragment )
                     .commit();
         }
     }

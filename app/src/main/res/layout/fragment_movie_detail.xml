@@ -1,53 +1,124 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@android:color/white"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     tools:ignore="MergeRootFrame">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/teaserContainer"
-        android:background="@android:color/white"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="match_parent">
 
-        android:orientation="vertical"
-        tools:context=".MovieDetailActivityFragment">
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/teaserContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/white"
 
             android:orientation="vertical"
-            android:weightSum="6">
+            tools:context=".MovieDetailActivityFragment">
 
-            <LinearLayout
+
+            <!-- android:weightSum="6">-->
+
+            <RelativeLayout
+                android:id="@+id/image_release_date"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:paddingTop="10dp"
-                android:layout_weight="2"
+                android:layout_height="match_parent"
+                android:gravity="end"
                 android:orientation="vertical">
+                <!--android:layout_weight="2"-->
+
 
                 <ImageView
                     android:id="@+id/iconTeaserBanner"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
 
-            </LinearLayout>
+                    android:layout_alignParentTop="true" />
+
+                <LinearLayout
+                    android:id="@+id/rating_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/iconTeaserBanner"
+                    android:background="@android:color/darker_gray"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/ratinglabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:text="Rating"
+                        android:textColor="@android:color/black"
+                        android:textSize="22dp" />
+
+                    <TextView
+                        android:id="@+id/rating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:textColor="@android:color/black"
+                        android:textSize="14dp"
+
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rating_container"
+                    android:layout_toRightOf="@+id/iconTeaserBanner"
+                    android:background="@android:color/darker_gray"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:text="ReleaseDate"
+                        android:textColor="@android:color/black"
+                        android:textSize="22dp" />
+
+                    <TextView
+                        android:id="@+id/releasedate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:textColor="@android:color/black"
+                        android:textSize="14dp"
+
+                        />
+
+                </LinearLayout>
+
+                <CheckBox
+                    android:id="@+id/favorite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/rating_container"
+                    android:text="@string/favorite"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+
             <LinearLayout
-
+                android:id="@+id/relative"
                 android:layout_width="fill_parent"
-                android:layout_height="0dp"
-                android:layout_weight="4">
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/image_release_date">
+                <!--android:layout_weight="4">-->
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:scrollbars="vertical"
-                    android:background="@android:color/white">
-                    <ScrollView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+
+                    android:background="@android:color/white"
+                    android:scrollbars="vertical">
+
                     <LinearLayout
 
 
@@ -62,32 +133,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical">
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:background="@android:color/darker_gray"
-                                >
 
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:padding="10dp"
-                                    android:textColor="@android:color/black"
-                                    android:text="Rating"
-                                    android:textSize="22dp"
-                                    />
-
-                                <TextView
-                                    android:id="@+id/rating"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:padding="10dp"
-                                    android:textColor="@android:color/black"
-                                    android:textSize="14dp"
-
-                                    />
-                            </LinearLayout>
                             <TextView
                                 android:id="@+id/teaserName"
                                 android:layout_width="match_parent"
@@ -107,54 +153,71 @@
 
                                 />
 
-                            <LinearLayout
+                            <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:background="@android:color/darker_gray"
-                                >
+                                android:editable="false"
+                                android:textStyle="bold"
+                                android:textSize="16dp"
+                                android:text="TRAILERS"
+                                android:typeface="serif"
+                                android:layout_marginTop="16dp" />
 
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:padding="10dp"
-                                    android:textColor="@android:color/black"
-                                    android:text="ReleaseDate"
-                                    android:textSize="22dp"
-                                />
+                            <android.support.v7.widget.RecyclerView
 
-                                <TextView
-                                android:id="@+id/releasedate"
+                                android:id="@+id/trailer_recycler_view"
+                                android:layout_margin="16dp"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                    android:padding="10dp"
-                                android:textColor="@android:color/black"
-                                android:textSize="14dp"
+                                android:layout_height="100dp"
+                                android:scrollbars="horizontal" />
 
-                                />
-                            </LinearLayout>
+
                         </LinearLayout>
 
 
-
                     </LinearLayout>
-                    </ScrollView>
-
-
 
 
                 </RelativeLayout>
+
+
             </LinearLayout>
-        </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:editable="false"
+                android:layout_below="@+id/relative"
+                android:id="@+id/reviews_title"
+                android:textSize="16dp"
+                android:textStyle="bold"
+                android:text="REVIEWS"
+                android:typeface="serif"
+                android:layout_marginLeft="16dp" />
+
+            <android.support.v7.widget.RecyclerView
+
+                android:id="@+id/review_recycler_view"
+
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                android:layout_below="@+id/reviews_title"
+                android:layout_gravity="center"
+                android:baselineAligned="false"
+                android:orientation="vertical"
+                android:scrollbars="vertical"
+                android:layout_margin="16dp"
+                android:showDividers="middle|beginning|end" />
 
 
-    </RelativeLayout>
+        </RelativeLayout>
+    </ScrollView>
 
-   <!-- <ImageButton
-        android:id="@+id/back_arrow"
-        android:layout_gravity="top"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/action_back_drawable" />-->
+    <!-- <ImageButton
+         android:id="@+id/back_arrow"
+         android:layout_gravity="top"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:background="@drawable/action_back_drawable" />-->
 
 </FrameLayout>
