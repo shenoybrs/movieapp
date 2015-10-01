@@ -20,4 +20,5 @@
     <string name="api_error_title">API KEY Error</string>
     <string name="api_error_message">Please add the key in gradle.properties</string>
     <string name="favorite">Click to Favorite</string>
+    <string name="action_share">Share</string>
 </resources>

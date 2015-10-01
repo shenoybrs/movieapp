@@ -3,6 +3,7 @@ package com.mobileteche.movieapp;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -11,8 +12,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.ShareActionProvider;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -54,11 +57,15 @@ public class MovieDetailActivityFragment extends Fragment implements LoaderManag
     private static final int DETAIL_LOADER = 2;
     private static final int TRAIL_LOADER = 3;
     private static final int REVIEW_LOADER = 4;
+    private static final String TRAILER_SHARE_HASHTAG = "Movie";
     private CheckBox favorite;
     private Uri mUri;
     private TextView teaserName, teaserShortDesc, releasedate, rating;
+    private String mTrailer;
+    private String mTrailerTitle;
 
     public MovieDetailActivityFragment() {
+        setHasOptionsMenu(true);
     }
 
     MovieModel movieModel = null;
@@ -390,6 +397,13 @@ public class MovieDetailActivityFragment extends Fragment implements LoaderManag
                 delete(MovieContract.MovieEntry.buildMovieUri(movieId), null, null);
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        mTrailer = null;
+        mTrailerTitle = null;
+    }
+
     private void removeTrailer(long movieId) {
         //delete trailer for the movie
         getActivity().getContentResolver().
@@ -465,11 +479,29 @@ public class MovieDetailActivityFragment extends Fragment implements LoaderManag
 
         return testValues;
     }
-
+    private ShareActionProvider mShareActionProvider;
+    
+    private Intent createShareForecastIntent() {
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT, mTrailerTitle);
+        shareIntent.putExtra(Intent.EXTRA_TEXT, mTrailer + TRAILER_SHARE_HASHTAG);
+        return shareIntent;
+    }
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 
         inflater.inflate(R.menu.menu_movie_detail, menu);
+
+        MenuItem menuItem = menu.findItem(R.id.action_share);
+        // Get the provider and hold onto it to set/change the share intent.
+        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
+
+        // If onLoadFinished happens before this, we can go ahead and set the share intent now.
+        if (mTrailer != null) {
+            mShareActionProvider.setShareIntent(createShareForecastIntent());
+        }
 
     }
 
@@ -587,6 +619,11 @@ public class MovieDetailActivityFragment extends Fragment implements LoaderManag
                     mTrailerAdapter.add(trailerModels.get(count));
                 }
                 trailerModel.addAll(trailerModels);
+                mTrailer ="http://www.youtube.com/watch?v="+trailerModel.get(0).key;
+                mTrailerTitle = trailerModel.get(0).name;
+                if (mTrailer != null) {
+                    mShareActionProvider.setShareIntent(createShareForecastIntent());
+                }
                 mTrailerRecyclerView.setAdapter(mTrailerAdapter);
             }
 
